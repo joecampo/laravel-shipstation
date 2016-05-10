@@ -147,7 +147,7 @@ Please note that tests will create an order, check the order, and delete the ord
 ## Contribution
 Pull requests are most certainly welcomed! This is a WIP.
 ## License
-The MIT License (MIT). Please see [License File](https://github.com/joecampo/larashipstation/blob/master/LICENSE) for more information.
+The MIT License (MIT). Please see [License File](https://github.com/joecampo/laravel-shipstation/blob/master/LICENSE) for more information.
 [ico-version]: https://img.shields.io/packagist/v/campo/laravel-shipstation.svg?style=flat-square
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
 [link-packagist]: https://packagist.org/packages/campo/laravel-shipstation

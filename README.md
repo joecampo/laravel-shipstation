@@ -3,6 +3,7 @@ LaravelShipStation
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Software License][ico-license]](LICENSE.md)
 [![Latest Version on Packagist][packagist-downloads]][link-packagist]
+[![Build Status](https://travis-ci.org/joecampo/laravel-shipstation.svg?branch=master)](https://travis-ci.org/joecampo/laravel-shipstation)
 
 This is a simple PHP API wrapper for [ShipStation](http://shipstation.com) built for Laravel 5.\*.
 

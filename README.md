@@ -106,7 +106,7 @@ An example on how to create a new order to be shipped:
     var_dump($shipStation->orders->post($order, 'createorder'));
     // or with the helper: $shipStation->orders->create($order); would be the same.
 ```
-## DELETE
+### DELETE
 ```php
 $shipStation->{$endpoint}->delete($resourceEndPoint);
 ```
@@ -114,7 +114,7 @@ Example of deleting an order by it's order ID:
 ```php
 $shipStation->orders->delete($orderId);
 ```
-## UPDATE
+### UPDATE
 ```php
 $shipStation->{$endpoint}->update($query = [], $resourceEndPoint);
 ```

@@ -1,5 +1,8 @@
 LaravelShipStation
 ===============
+[![Latest Version on Packagist][ico-version]][link-packagist]
+[![Software License][ico-license]](LICENSE.md)
+[![Latest Version on Packagist][packagist-downloads]][link-packagist]
 
 This is a simple PHP API wrapper for [ShipStation](http://shipstation.com) built for Laravel 5.\*.
 
@@ -53,7 +56,7 @@ Example of getting an order with the orderNumber of 1.
 ```php
 $shipStation = $this->app['LaravelShipStation\ShipStation'];
 $options = ['orderNumber' => 1];
-$shipStation->orders->get($options);
+$order = $shipStation->orders->get($options);
 ````
 ### POST
 ```php
@@ -144,3 +147,7 @@ Please note that tests will create an order, check the order, and delete the ord
 Pull requests are most certainly welcomed! This is a WIP.
 ## License
 The MIT License (MIT). Please see [License File](https://github.com/joecampo/larashipstation/blob/master/LICENSE) for more information.
+[ico-version]: https://img.shields.io/packagist/v/campo/laravel-shipstation.svg?style=flat-square
+[ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
+[link-packagist]: https://packagist.org/packages/campo/laravel-shipstation
+[packagist-downloads]: https://img.shields.io/packagist/dt/campo/laravel-shipstation.svg

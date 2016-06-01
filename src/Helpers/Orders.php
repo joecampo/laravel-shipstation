@@ -22,11 +22,17 @@ class Orders extends Endpoint
      */
     public function exists($orderNumber)
     {
-        $order = $this->get([
+        $orders = $this->get([
             'orderNumber' => $orderNumber
         ]);
 
-        return isset($order->total) && $order->total > 0 ? true : false;
+        foreach ($orders->orders as $order) {
+            if ($order->orderNumber == $orderNumber) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

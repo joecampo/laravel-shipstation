@@ -57,10 +57,62 @@ abstract class Endpoint
      *
      * @param  array  $options
      * @param  string  $endpoint
-     * @return array
+     * @return array|null
      */
     public function update($options = [], $endpoint = '')
     {
         return $this->api->update($options, $endpoint);
+    }
+
+
+    /**
+     * Get the order the orderId from an orderNumber.
+     *
+     * @param  mixed  $orderNumber
+     * @return int|null
+     */
+    public function getOrderId($orderNumber)
+    {
+        $pages = $this->getTotalPages($orderNumber);
+
+        foreach (range(1, $pages) as $i) {
+            $response = $this->api->request('GET', "/orders/", [
+                'query' => [
+                    'orderNumber' => $orderNumber,
+                    'page' => $i
+                ]
+            ]);
+
+            $this->api->sleepIfRateLimited($response);
+
+            $data = json_decode($response->getBody()->getContents());
+
+            $orders = isset($data->orders) ? $data->orders : [];
+
+            foreach ($orders as $order) {
+                if ($order->orderNumber === $orderNumber) {
+                    return $order->orderId;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Get the total number of pages possible to find the inputted order number.
+     *
+     * @param  mixed  $orderNumber
+     * @return int
+     */
+    private function getTotalPages($orderNumber)
+    {
+        $response = $this->api->request('GET', "/orders/", [
+            'query' => ['orderNumber' => $orderNumber]
+        ]);
+
+        $data = json_decode($response->getBody()->getContents());
+
+        return isset($data->pages) ? $data->pages : 0;
     }
 }

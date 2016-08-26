@@ -20,31 +20,24 @@ class Orders extends Endpoint
      * @param  mixed  $orderNumber
      * @return bool
      */
-    public function exists($orderNumber)
+    public function existsByOrderNumber($orderNumber)
     {
-        $orders = $this->get([
-            'orderNumber' => $orderNumber
-        ]);
+        $orderId = $this->getOrderId($orderNumber);
 
-        foreach ($orders->orders as $order) {
-            if ($order->orderNumber == $orderNumber) {
-                return true;
-            }
-        }
-
-        return false;
+        return $orderId ? true : false;
     }
 
     /**
      * How many orders are awaiting shipment?
      *
-     * @return int
+     * @return int|null
      */
     public function awaitingShipmentCount()
     {
         $count = $this->get([
             'orderStatus' => 'awaiting_shipment'
         ]);
-        return isset($count->total) ? $count->total : 0;
+
+        return isset($count->total) ? $count->total : null;
     }
 }

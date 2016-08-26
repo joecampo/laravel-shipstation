@@ -82,7 +82,7 @@ class ShipStationTest extends PHPUnit_Framework_TestCase
      */
     public function order_does_exist()
     {
-        $this->assertTrue($this->shipStation->orders->exists('TestOrder'));
+        $this->assertTrue($this->shipStation->orders->existsByOrderNumber('TestOrder'));
     }
 
     /**
@@ -113,6 +113,6 @@ class ShipStationTest extends PHPUnit_Framework_TestCase
 
         $this->shipStation->orders->delete($orderId);
 
-        $this->assertFalse($this->shipStation->orders->exists('TestOrder'));
+        $this->assertFalse($this->shipStation->orders->existsByOrderNumber('TestOrder'));
     }
 }

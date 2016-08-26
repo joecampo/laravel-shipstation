@@ -9,8 +9,10 @@ class Shipments extends Endpoint
      * @param  int  $orderNumber
      * @return array
      */
-    public function forOrder($orderNumber)
+    public function forOrderNumber($orderNumber)
     {
-        return $this->get(['orderNumber' => $orderNumber]);
+        $orderId = $this->getOrderId($orderNumber);
+
+        return $this->get(['orderId' => $orderId]);
     }
 }

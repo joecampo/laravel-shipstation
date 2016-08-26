@@ -66,7 +66,7 @@ class ShipStation extends Client
             'query' => $options
         ]);
 
-        $this->checkRateLimit($response);
+        $this->sleepIfRateLimited($response);
 
         return json_decode($response->getBody()->getContents());
     }
@@ -88,7 +88,7 @@ class ShipStation extends Client
             'form_params' => $options
         ]);
 
-        $this->checkRateLimit($response);
+        $this->sleepIfRateLimited($response);
 
         return json_decode($response->getBody()->getContents());
     }
@@ -103,7 +103,7 @@ class ShipStation extends Client
     {
         $response = $this->request('DELETE', "{$this->endpoint}{$endpoint}");
 
-        $this->checkRateLimit($response);
+        $this->sleepIfRateLimited($response);
 
         return json_decode($response->getBody()->getContents());
     }
@@ -125,7 +125,7 @@ class ShipStation extends Client
             'form_params' => $options
         ]);
 
-        $this->checkRateLimit($response);
+        $this->sleepIfRateLimited($response);
 
         return json_decode($response->getBody()->getContents());
     }
@@ -135,7 +135,7 @@ class ShipStation extends Client
      *
      * @param Response $response
      */
-    private function checkRateLimit(Response $response)
+    public function sleepIfRateLimited(Response $response)
     {
         $rateLimit = $response->getHeader('X-Rate-Limit-Remaining')[0];
         $rateLimitWait = $response->getHeader('X-Rate-Limit-Reset')[0];

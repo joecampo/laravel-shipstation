@@ -13,7 +13,7 @@ This package can be installed via [Composer](http://getcomposer.org) by requirin
 ```json
 {
     "require": {
-        "campo/laravel-shipstation": "~1.0"
+        "campo/laravel-shipstation": "~2.0"
     }
 }
 ```
@@ -53,10 +53,10 @@ Endpoints for the API are accessed via properties (e.g. ```$shipStation->orders-
 ```php
 $shipStation->{$endpoint}->get($options = [], $endpoint = '');
 ```
-Example of getting an order with the orderNumber of 1.
+Example of getting an order with the orderId of 1.
 ```php
 $shipStation = $this->app['LaravelShipStation\ShipStation'];
-$options = ['orderNumber' => 1];
+$options = ['orderId' => 1];
 $order = $shipStation->orders->get($options);
 ````
 ### POST
@@ -123,9 +123,13 @@ $shipStation->{$endpoint}->update($query = [], $resourceEndPoint);
 Helpers are located in ```/src/Helpers``` and will be named after the endpoint. Currently there is only a helper for the /orders endpoint and /shipments endpint. I will be adding more; feel free to send a PR with any you use.
 
 Check to see if an order already exists in ShipStation via an Order Number:
+
 ```php
-$orderExists = $shipStation->orders->exists($orderNumber) // returns bool
+$orderExists = $shipStation->orders->existsByOrderNumber($orderNumber) // returns bool
 ```
+
+> Note: When using the orderNumber query parameter ShipStation will return any order that contains the search term. e.g. orderNumber = 1 will return any order that CONTAINS 1 in ascending order and not an exact match to the query. If you have two orders 123, and 1234 in your ShipStation and call $shipStation->orders->get(['orderNumber' => 123]); you will return both orders.
+
 Check how many orders are in ```awaiting_fulfillment``` status:
 ```php
 $count = $shipStation->orders->awaitingShipmentCount(); // returns int
@@ -136,7 +140,7 @@ $newOrder = $shipStation->orders->create($order);
 ```
 Get the shipments for a specific order number.
 ```php
-$shipments = $shipStation->shipments->forOrder($orderNumber);
+$shipments = $shipStation->shipments->forOrderNumber($orderNumber);
 ```
 
 ## ShipStation API Rate Limit

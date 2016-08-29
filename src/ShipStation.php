@@ -58,7 +58,7 @@ class ShipStation extends Client
      *
      * @param  array  $options
      * @param  string  $endpoint
-     * @return array
+     * @return \stdClass
      */
     public function get($options = [], $endpoint = '')
     {
@@ -76,7 +76,7 @@ class ShipStation extends Client
      *
      * @param  array  $options
      * @param  string  $endpoint
-     * @return array
+     * @return \stdClass
      */
     public function post($options = [], $endpoint = '')
     {
@@ -97,7 +97,7 @@ class ShipStation extends Client
      * Delete a resource using the assigned endpoint ($this->endpoint).
      *
      * @param  string  $endpoint
-     * @return array
+     * @return \stdClass
      */
     public function delete($endpoint = '')
     {
@@ -113,7 +113,7 @@ class ShipStation extends Client
      *
      * @param  array  $options
      * @param  string  $endpoint
-     * @return array
+     * @return \stdClass
      */
     public function update($options = [], $endpoint = '')
     {

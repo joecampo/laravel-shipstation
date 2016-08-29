@@ -22,7 +22,7 @@ abstract class Endpoint
      *
      * @param  array  $options
      * @param  string  $endpoint
-     * @return array
+     * @return \stdClass
      */
     public function get($options = [], $endpoint = '')
     {
@@ -34,7 +34,7 @@ abstract class Endpoint
      *
      * @param  array  $options
      * @param  string  $endpoint
-     * @return array
+     * @return \stdClass
      */
     public function post($options = [], $endpoint = '')
     {
@@ -45,7 +45,7 @@ abstract class Endpoint
      * Delete a resource using the assigned endpoint ($this->api->endpoint).
      *
      * @param  string  $endpoint
-     * @return array
+     * @return \stdClass
      */
     public function delete($endpoint = '')
     {
@@ -57,7 +57,7 @@ abstract class Endpoint
      *
      * @param  array  $options
      * @param  string  $endpoint
-     * @return array|null
+     * @return \stdClass
      */
     public function update($options = [], $endpoint = '')
     {

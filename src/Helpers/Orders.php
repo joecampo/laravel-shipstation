@@ -7,7 +7,7 @@ class Orders extends Endpoint
      * Create a single order in ShipStation.
      *
      * @param  array  $order
-     * @return array
+     * @return \stdClass
      */
     public function create($order)
     {

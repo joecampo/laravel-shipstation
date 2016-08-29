@@ -108,7 +108,6 @@ class ShipStationTest extends PHPUnit_Framework_TestCase
      */
     public function order_is_deleted()
     {
-
         $orderId = $this->shipStation->orders->get(['orderNumber' => 'TestOrder'])->orders[0]->orderId;
 
         $this->shipStation->orders->delete($orderId);

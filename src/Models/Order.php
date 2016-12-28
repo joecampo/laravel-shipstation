@@ -59,11 +59,6 @@ class Order
     public $items;
 
     /**
-     * @var float The order total. Please note is this a read-only field.
-     */
-    public $orderTotal;
-
-    /**
      * @var float The total amount paid for the Order.
      */
     public $amountPaid;

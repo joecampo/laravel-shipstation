@@ -62,9 +62,7 @@ class ShipStation extends Client
      */
     public function get($options = [], $endpoint = '')
     {
-        $response = $this->request('GET', "{$this->endpoint}{$endpoint}", [
-            'query' => $options
-        ]);
+        $response = $this->request('GET', "{$this->endpoint}{$endpoint}", ['query' => $options]);
 
         $this->sleepIfRateLimited($response);
 
@@ -80,13 +78,7 @@ class ShipStation extends Client
      */
     public function post($options = [], $endpoint = '')
     {
-        if ($options instanceof \stdClass) {
-            $options = $this->toArray($options);
-        }
-
-        $response = $this->request('POST', "{$this->endpoint}{$endpoint}", [
-            'form_params' => $options
-        ]);
+        $response = $this->request('POST', "{$this->endpoint}{$endpoint}", ['json' => $options]);
 
         $this->sleepIfRateLimited($response);
 
@@ -117,13 +109,7 @@ class ShipStation extends Client
      */
     public function update($options = [], $endpoint = '')
     {
-        if ($options instanceof \stdClass) {
-            $options = $this->toArray($options);
-        }
-
-        $response = $this->request('PUT', "{$this->endpoint}{$endpoint}", [
-            'form_params' => $options
-        ]);
+        $response = $this->request('PUT', "{$this->endpoint}{$endpoint}", ['json' => $options]);
 
         $this->sleepIfRateLimited($response);
 
@@ -143,25 +129,6 @@ class ShipStation extends Client
         if (($rateLimitWait / $rateLimit) > 1.5) {
             sleep(1.5);
         }
-    }
-
-    /**
-     * Convert an object to an array.
-     *
-     * @param  \stdClass $object
-     * @return array
-     */
-    private function toArray($object)
-    {
-        $vars = get_object_vars($object);
-
-        foreach ($vars as $key => $value) {
-            if (is_object($value)) {
-                $vars[$key] = $this->toArray($value);
-            }
-        }
-
-        return $vars;
     }
 
     /**

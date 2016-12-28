@@ -74,7 +74,7 @@ class OrderItem
      * @var bool Indicates that the OrderItem is a non-physical adjustment to the order
      * (e.g. a discount or promotional code).
      */
-    public $adjustment;
+    public $adjustment = false;
 
     /**
      * @var string UPC associated with this OrderItem.

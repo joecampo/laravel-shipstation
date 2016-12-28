@@ -25,9 +25,7 @@ class ShipStationTest extends PHPUnit_Framework_TestCase
         $this->shipStation = new LaravelShipStation\ShipStation(getenv('KEY'), getenv('SECRET'));
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function endpoint_can_be_set()
     {
         $this->shipStation->shipments;
@@ -35,9 +33,7 @@ class ShipStationTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('/shipments/', $this->shipStation->endpoint);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function order_can_be_created()
     {
         $address = new LaravelShipStation\Models\Address();
@@ -77,17 +73,13 @@ class ShipStationTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('TestOrder', $newOrder->orderNumber);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function order_does_exist()
     {
         $this->assertTrue($this->shipStation->orders->existsByOrderNumber('TestOrder'));
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function order_has_internal_note()
     {
         $order = $this->shipStation->orders->get(['orderNumber' => 'TestOrder']);
@@ -95,17 +87,26 @@ class ShipStationTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('A note about my order.', $order->orders[0]->internalNotes);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
+    public function order_can_be_updated()
+    {
+        $order = $this->shipStation->orders->get(['orderNumber' => 'TestOrder'])->orders[0];
+
+        $order->internalNotes = 'testing an updated note.';
+
+        $updatedOrder = $this->shipStation->orders->post($order, 'createorder');
+
+        $this->assertEquals('testing an updated note.', $updatedOrder->internalNotes);
+    }
+
+
+    /** @test */
     public function orders_are_awaiting_shipments()
     {
         $this->assertGreaterThan(0, $this->shipStation->orders->awaitingShipmentCount());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function order_is_deleted()
     {
         $orderId = $this->shipStation->orders->get(['orderNumber' => 'TestOrder'])->orders[0]->orderId;

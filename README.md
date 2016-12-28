@@ -13,7 +13,7 @@ This package can be installed via [Composer](http://getcomposer.org) by requirin
 ```json
 {
     "require": {
-        "campo/laravel-shipstation": "~2.0"
+        "campo/laravel-shipstation": "~3.0"
     }
 }
 ```

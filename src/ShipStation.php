@@ -18,6 +18,7 @@ class ShipStation extends Client
         '/accounts/',
         '/carriers/',
         '/customers/',
+        '/fulfillments/',
         '/orders/',
         '/products/',
         '/shipments/',

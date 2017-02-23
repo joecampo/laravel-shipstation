@@ -40,6 +40,7 @@ Endpoints for the API are accessed via properties (e.g. ```$shipStation->orders-
 * accounts
 * carriers
 * customers
+* fulfillments
 * orders
 * products
 * shipments

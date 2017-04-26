@@ -104,9 +104,9 @@ An example on how to create a new order to be shipped:
     $order->shipTo = $address;
     $order->items[] = $item;
 
-    // This will var_dump the newly created order.
-    var_dump($shipStation->orders->post($order, 'createorder'));
-    // or with the helper: $shipStation->orders->create($order); would be the same.
+    // This will var_dump the newly created order, and order should be wrapped in an array.
+    var_dump($shipStation->orders->post([$order], 'createorder'));
+    // or with the helper: $shipStation->orders->create([$order]); would be the same.
 ```
 ### DELETE
 ```php

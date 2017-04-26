@@ -14,17 +14,17 @@ class AdvancedOptions
     /**
      * @var bool Specifies whether the order is non-machinable.
      */
-    public $nonMachinable;
+    public $nonMachinable = false;
 
     /**
      * @var bool Specifies whether the order is to be delivered on a Saturday.
      */
-    public $saturdayDelivery;
+    public $saturdayDelivery = false;
 
     /**
      * @var bool Specifies whether the order contains alcohol.
      */
-    public $containsAlcohol;
+    public $containsAlcohol = false;
 
     /**
      * @var int ID of store that is associated with the order. If not specified in

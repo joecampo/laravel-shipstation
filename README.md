@@ -57,8 +57,12 @@ $shipStation->{$endpoint}->get($options = [], $endpoint = '');
 Example of getting an order with the orderId of 1.
 ```php
 $shipStation = $this->app['LaravelShipStation\ShipStation'];
-$options = ['orderId' => 1];
-$order = $shipStation->orders->get($options);
+
+// Fetch an order by orderId == 123, orderId is defined by ShipStation
+$order = $shipStation->orders->get([], $endpoint = 123); // returns \stdClass
+
+// Fetch an orderId by the orderNumber, which may be user defined
+$order = $shipStation->orders->getOrderId('ORD-789'); // returns integer
 ````
 ### POST
 ```php

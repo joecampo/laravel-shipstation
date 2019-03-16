@@ -127,7 +127,7 @@ class ShipStation extends Client
         $rateLimit = $response->getHeader('X-Rate-Limit-Remaining')[0];
         $rateLimitWait = $response->getHeader('X-Rate-Limit-Reset')[0];
 
-        if (($rateLimitWait / $rateLimit) > 1.5) {
+        if ($rateLimit === 0 || ($rateLimitWait / $rateLimit) > 1.5) {
             sleep(1.5);
         }
     }

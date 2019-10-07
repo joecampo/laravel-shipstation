@@ -40,11 +40,13 @@ class ShipStation extends Client
      * @param  string  $apiSecret
      * @throws \Exception
      */
-    public function __construct($apiKey, $apiSecret)
+    public function __construct($apiKey, $apiSecret, $apiURL)
     {
         if (!isset($apiKey, $apiSecret)) {
             throw new \Exception('Your API key and/or private key are not set. Did you run artisan vendor:publish?');
         }
+
+        $this->base_uri = $apiURL;
 
         parent::__construct([
             'base_uri' => $this->base_uri,

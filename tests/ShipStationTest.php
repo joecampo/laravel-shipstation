@@ -17,12 +17,12 @@ class ShipStationTest extends PHPUnit_Framework_TestCase
             exit();
         }
 
-        if(empty(getenv('KEY')) || empty(getenv('SECRET'))) {
-            echo "Please set your API Key & Secret Key in phpunit.xml" . PHP_EOL;
+        if(empty(getenv('KEY')) || empty(getenv('SECRET')) || empty(getenv('API_URL'))) {
+            echo "Please set your API Key, Secret Key, & URL in phpunit.xml" . PHP_EOL;
             exit();
         }
 
-        $this->shipStation = new LaravelShipStation\ShipStation(getenv('KEY'), getenv('SECRET'));
+        $this->shipStation = new LaravelShipStation\ShipStation(getenv('KEY'), getenv('SECRET'), getenv('API_URL'));
     }
 
     /** @test */

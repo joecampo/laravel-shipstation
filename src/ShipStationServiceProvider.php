@@ -28,7 +28,8 @@ class ShipStationServiceProvider extends ServiceProvider
         $this->app->singleton(ShipStation::class, function ($app) {
             return new ShipStation(
                 config('shipstation.apiKey'),
-                config('shipstation.apiSecret')
+                config('shipstation.apiSecret'),
+                config('shipstation.apiURL')
             );
         });
     }

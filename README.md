@@ -5,7 +5,7 @@ LaravelShipStation
 [![Latest Version on Packagist][packagist-downloads]][link-packagist]
 [![Build Status](https://travis-ci.org/joecampo/laravel-shipstation.svg?branch=master)](https://travis-ci.org/joecampo/laravel-shipstation)
 
-This is a simple PHP API wrapper for [ShipStation](http://shipstation.com) built for Laravel 5.\*.
+This is a simple PHP API wrapper for [ShipStation](http://shipstation.com) built for Laravel 5.\*/6.
 
 Installation
 ------------
@@ -13,7 +13,7 @@ This package can be installed via [Composer](http://getcomposer.org) by requirin
 ```json
 {
     "require": {
-        "campo/laravel-shipstation": "~3.0"
+        "campo/laravel-shipstation": "~4.0"
     }
 }
 ```

@@ -150,6 +150,33 @@ $shipments = $shipStation->shipments->forOrderNumber($orderNumber);
 
 ## ShipStation API Rate Limit
 ShipStation only allows for 40 API calls that resets every 60 seconds (or 1 call every 1.5 seconds). By default, LaravelShipStation will protect against any calls being rate limited by pausing when we are averaging more than 1 call every 1.5 seconds.
+
+Once a request has been made, information about the current rate limiting values can be accessed using the following methods:
+
+Get the maximum number of requests that can be sent per window:
+```php
+// integer
+$shipStation->getMaxAllowedRequests()
+```
+
+Get the remaining number of requests that can be sent in the current window:
+```php
+// integer
+$shipStation->getRemainingRequests()
+```
+
+Get the number of seconds remaining until the next window begins:
+```php
+// integer
+$shipStation->getSecondsUntilReset()
+```
+
+Check if requests are currently being rate limited:
+```php
+// boolean
+$shipStation->isRateLimited()
+```
+
 ## Tests
 Tests can be ran using ```phpunit```. 
 Please note that tests will create an order, check the order, and delete the order in your production environment. By default, tests are disabled. If you would like to run the tests edit the ```phpunit.xml``` file to set the environment variable ```SHIPSTATION_TESTING``` to ```true``` and set your API Key & Secret Key.

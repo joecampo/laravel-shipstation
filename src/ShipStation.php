@@ -129,7 +129,7 @@ class ShipStation extends Client
     }
 
     /**
-     * Get the maximum number of requests that can be sent per minute
+     * Get the maximum number of requests that can be sent per window
      *
      * @return int
      */

@@ -19,6 +19,7 @@
     <php>
         <env name="SHIPSTATION_TESTING" value="false"/>
         <env name="KEY" value=""/>
+        <env name="PARTNER_KEY" value=""/>
         <env name="SECRET" value=""/>
         <env name="API_URL" value=""/>
     </php>

@@ -33,6 +33,8 @@ After installing via composer you will need to publish the configuration:
 php artisan vendor:publish
 ```
 This will create the configuration file for your API key and API secret key at ```config/shipstation.php```. You will need to obtain your API & Secret key from ShipStation: [How can I get access to ShipStation's API?](https://help.shipstation.com/hc/en-us/articles/206638917-How-can-I-get-access-to-ShipStation-s-API-)
+
+If ShipStation has provided you with a partner API key, set it in your configuration file.
 ## Dependencies
 LaravelShipStation uses ```GuzzleHttp\Guzzle```
 ## Endpoints

@@ -115,4 +115,15 @@ class ShipStationTest extends PHPUnit_Framework_TestCase
 
         $this->assertFalse($this->shipStation->orders->existsByOrderNumber('TestOrder'));
     }
+
+    /** @test */
+    public function rate_limits_are_set_after_request()
+    {
+        $this->shipStation->webhooks->get();
+
+        $this->assertGreaterThanOrEqual(0, $this->shipStation->getMaxAllowedRequests());
+        $this->assertGreaterThanOrEqual(0, $this->shipStation->getRemainingRequests());
+        $this->assertGreaterThanOrEqual(0, $this->shipStation->getSecondsUntilReset());
+        $this->assertInternalType('boolean', $this->shipStation->isRateLimited());
+    }
 }

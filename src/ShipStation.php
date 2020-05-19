@@ -33,6 +33,15 @@ class ShipStation extends Client
      */
     private $base_uri = 'https://ssapi.shipstation.com';
 
+    /** @var int */
+    private $maxAllowedRequests = 0;
+
+    /** @var int|null */
+    private $remainingRequests = null;
+
+    /** @var int */
+    private $secondsUntilReset = 0;
+
     /**
      * ShipStation constructor.
      *
@@ -120,16 +129,58 @@ class ShipStation extends Client
     }
 
     /**
+     * Get the maximum number of requests that can be sent per minute
+     *
+     * @return int
+     */
+    public function getMaxAllowedRequests()
+    {
+        return $this->maxAllowedRequests;
+    }
+
+    /**
+     * Get the remaining number of requests that can be sent in the current window
+     *
+     * @return int
+     */
+    public function getRemainingRequests()
+    {
+        return $this->remainingRequests;
+    }
+
+    /**
+     * Get the number of seconds remaining until the next window begins
+     *
+     * @return int
+     */
+    public function getSecondsUntilReset()
+    {
+        return $this->secondsUntilReset;
+    }
+
+    /**
+     * Are we currently rate limited?
+     * We are if there are no more requests allowed in the current window
+     *
+     * @return bool
+     */
+    public function isRateLimited()
+    {
+        return $this->remainingRequests !== null && ! $this->remainingRequests;
+    }
+
+    /**
      * Check to see if we are about to rate limit and pause if necessary.
      *
      * @param Response $response
      */
     public function sleepIfRateLimited(Response $response)
     {
-        $rateLimit = $response->getHeader('X-Rate-Limit-Remaining')[0];
-        $rateLimitWait = $response->getHeader('X-Rate-Limit-Reset')[0];
+        $this->maxAllowedRequests = (int) $response->getHeader('X-Rate-Limit-Limit')[0];
+        $this->remainingRequests = (int) $response->getHeader('X-Rate-Limit-Remaining')[0];
+        $this->secondsUntilReset = (int) $response->getHeader('X-Rate-Limit-Reset')[0];
 
-        if ($rateLimit === 0 || ($rateLimitWait / $rateLimit) > 1.5) {
+        if (($this->secondsUntilReset / $this->remainingRequests) > 1.5 || $this->isRateLimited()) {
             sleep(1.5);
         }
     }

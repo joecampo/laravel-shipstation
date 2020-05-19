@@ -29,7 +29,8 @@ class ShipStationServiceProvider extends ServiceProvider
             return new ShipStation(
                 config('shipstation.apiKey'),
                 config('shipstation.apiSecret'),
-                config('shipstation.apiURL')
+                config('shipstation.apiURL'),
+                config('shipstation.partnerApiKey')
             );
         });
     }

@@ -26,9 +26,7 @@ abstract class Endpoint
      */
     public function get($options = [], $endpoint = '')
     {
-        $response = $this->api->get($endpoint, (array) $options);
-
-        return json_decode($response->getBody()->getContents());
+        return $this->api->get($options, $endpoint);
     }
 
     /**
@@ -40,9 +38,7 @@ abstract class Endpoint
      */
     public function post($options = [], $endpoint = '')
     {
-        $response = $this->api->post($endpoint, (array) $options);
-
-        return json_decode($response->getBody()->getContents());
+      return $this->api->post($options, $endpoint);
     }
 
     /**
@@ -53,9 +49,7 @@ abstract class Endpoint
      */
     public function delete($endpoint = '')
     {
-        $response = $this->api->delete($endpoint);
-
-        return json_decode($response->getBody()->getContents());
+        return $this->api->delete($endpoint);
     }
 
     /**
@@ -67,9 +61,7 @@ abstract class Endpoint
      */
     public function update($options = [], $endpoint = '')
     {
-        $response = $this->api->put($endpoint, (array) $options);
-
-        return json_decode($response->getBody()->getContents());
+        return $this->api->update($options, $endpoint);
     }
 
 
@@ -84,7 +76,7 @@ abstract class Endpoint
         $pages = $this->getTotalPages($orderNumber);
 
         foreach (range(1, $pages) as $i) {
-            $response = $this->api->request('GET', "/orders/", [
+            $response = $this->api->client->request('GET', "/orders/", [
                 'query' => [
                     'orderNumber' => $orderNumber,
                     'page' => $i
@@ -115,7 +107,7 @@ abstract class Endpoint
      */
     private function getTotalPages($orderNumber)
     {
-        $response = $this->api->request('GET', "/orders/", [
+        $response = $this->api->client->request('GET', "/orders/", [
             'query' => ['orderNumber' => $orderNumber]
         ]);
 

@@ -5,12 +5,17 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 
-class ShipStation extends Client
+class ShipStation
 {
     /**
      * @var string The current endpoint for the API. The default endpoint is /orders/
      */
     public $endpoint = '/orders/';
+
+    /**
+     * @var \GuzzleHttp\Client The http client used when calling the API.
+     */
+    public $client = null;
 
     /**
      * @var array Our list of valid ShipStation endpoints.
@@ -68,94 +73,73 @@ class ShipStation extends Client
             $headers['x-partner'] = $partnerApiKey;
         }
 
-        parent::__construct([
+        $this->client = new Client([
             'base_uri' => $this->base_uri,
             'headers'  => $headers,
         ]);
     }
 
     /**
-     * Create and send an HTTP GET request.
+     * Get a resource using the assigned endpoint ($this->endpoint).
      *
-     * Use an absolute path to override the base path of the client, or a
-     * relative path to append to the base path of the client. The URL can
-     * contain the query string as well.
-     *
-     * @param string|UriInterface $uri     URI object or string.
-     * @param array               $options Request options to apply.
-     *
-     * @throws GuzzleException
+     * @param  array  $options
+     * @param  string  $endpoint
+     * @return \stdClass
      */
-    public function get($endpoint, array $options = []): ResponseInterface
+    public function get($options = [], $endpoint = '')
     {
-        $response = $this->request('GET', "{$this->endpoint}{$endpoint}", ['query' => $options]);
+        $response = $this->client->request('GET', "{$this->endpoint}{$endpoint}", ['query' => $options]);
 
         $this->sleepIfRateLimited($response);
 
-        return $response;
+        return json_decode($response->getBody()->getContents());
     }
 
     /**
-     * Create and send an HTTP POST request.
+     * Post to a resource using the assigned endpoint ($this->endpoint).
      *
-     * Use an absolute path to override the base path of the client, or a
-     * relative path to append to the base path of the client. The URL can
-     * contain the query string as well.
-     *
-     * @param string|UriInterface $uri     URI object or string.
-     * @param array               $options Request options to apply.
-     *
-     * @throws GuzzleException
+     * @param  array  $options
+     * @param  string  $endpoint
+     * @return \stdClass
      */
-    public function post($endpoint, array $options = []): ResponseInterface
+    public function post($options = [], $endpoint = '')
     {
-        $response = $this->request('POST', "{$this->endpoint}{$endpoint}", ['json' => $options]);
+        $response = $this->client->request('POST', "{$this->endpoint}{$endpoint}", ['json' => $options]);
 
         $this->sleepIfRateLimited($response);
 
-        return $response;
+        return json_decode($response->getBody()->getContents());
     }
 
     /**
-     * Create and send an HTTP DELETE request.
+     * Delete a resource using the assigned endpoint ($this->endpoint).
      *
-     * Use an absolute path to override the base path of the client, or a
-     * relative path to append to the base path of the client. The URL can
-     * contain the query string as well.
-     *
-     * @param string|UriInterface $uri     URI object or string.
-     * @param array               $options Request options to apply.
-     *
-     * @throws GuzzleException
+     * @param  string  $endpoint
+     * @return \stdClass
      */
-    public function delete($endpoint, array $options = []): ResponseInterface
+    public function delete($endpoint = '')
     {
-        $response = $this->request('DELETE', "{$this->endpoint}{$endpoint}");
+        $response = $this->client->request('DELETE', "{$this->endpoint}{$endpoint}");
 
         $this->sleepIfRateLimited($response);
 
-        return $response;
+        return json_decode($response->getBody()->getContents());
     }
 
     /**
-     * Create and send an HTTP PUT request.
+     * Update a resource using the assigned endpoint ($this->endpoint).
      *
-     * Use an absolute path to override the base path of the client, or a
-     * relative path to append to the base path of the client. The URL can
-     * contain the query string as well.
-     *
-     * @param string|UriInterface $uri     URI object or string.
-     * @param array               $options Request options to apply.
-     *
-     * @throws GuzzleException
+     * @param  array  $options
+     * @param  string  $endpoint
+     * @return \stdClass
      */
-    public function put($endpoint, array $options = []): ResponseInterface
+    public function update($options = [], $endpoint = '')
     {
-        $response = $this->request('PUT', "{$this->endpoint}{$endpoint}", ['json' => $options]);
+        $response = $this->client->request('PUT', "{$this->endpoint}{$endpoint}", ['json' => $options]);
 
         $this->sleepIfRateLimited($response);
 
-        return $response;
+        return json_decode($response->getBody()->getContents());
     }
 
     /**

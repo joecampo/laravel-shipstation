@@ -38,7 +38,7 @@ abstract class Endpoint
      */
     public function post($options = [], $endpoint = '')
     {
-        return $this->api->post($options, $endpoint);
+      return $this->api->post($options, $endpoint);
     }
 
     /**
@@ -76,7 +76,7 @@ abstract class Endpoint
         $pages = $this->getTotalPages($orderNumber);
 
         foreach (range(1, $pages) as $i) {
-            $response = $this->api->request('GET', "/orders/", [
+            $response = $this->api->client->request('GET', "/orders/", [
                 'query' => [
                     'orderNumber' => $orderNumber,
                     'page' => $i
@@ -107,7 +107,7 @@ abstract class Endpoint
      */
     private function getTotalPages($orderNumber)
     {
-        $response = $this->api->request('GET', "/orders/", [
+        $response = $this->api->client->request('GET', "/orders/", [
             'query' => ['orderNumber' => $orderNumber]
         ]);
 

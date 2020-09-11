@@ -3,6 +3,7 @@ namespace LaravelShipStation;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
 
 class ShipStation extends Client
 {
@@ -74,66 +75,87 @@ class ShipStation extends Client
     }
 
     /**
-     * Get a resource using the assigned endpoint ($this->endpoint).
+     * Create and send an HTTP GET request.
      *
-     * @param  array  $options
-     * @param  string  $endpoint
-     * @return \stdClass
+     * Use an absolute path to override the base path of the client, or a
+     * relative path to append to the base path of the client. The URL can
+     * contain the query string as well.
+     *
+     * @param string|UriInterface $uri     URI object or string.
+     * @param array               $options Request options to apply.
+     *
+     * @throws GuzzleException
      */
-    public function get($options = [], $endpoint = '')
+    public function get($endpoint, array $options = []): ResponseInterface
     {
         $response = $this->request('GET', "{$this->endpoint}{$endpoint}", ['query' => $options]);
 
         $this->sleepIfRateLimited($response);
 
-        return json_decode($response->getBody()->getContents());
+        return $response;
     }
 
     /**
-     * Post to a resource using the assigned endpoint ($this->endpoint).
+     * Create and send an HTTP POST request.
      *
-     * @param  array  $options
-     * @param  string  $endpoint
-     * @return \stdClass
+     * Use an absolute path to override the base path of the client, or a
+     * relative path to append to the base path of the client. The URL can
+     * contain the query string as well.
+     *
+     * @param string|UriInterface $uri     URI object or string.
+     * @param array               $options Request options to apply.
+     *
+     * @throws GuzzleException
      */
-    public function post($options = [], $endpoint = '')
+    public function post($endpoint, array $options = []): ResponseInterface
     {
         $response = $this->request('POST', "{$this->endpoint}{$endpoint}", ['json' => $options]);
 
         $this->sleepIfRateLimited($response);
 
-        return json_decode($response->getBody()->getContents());
+        return $response;
     }
 
     /**
-     * Delete a resource using the assigned endpoint ($this->endpoint).
+     * Create and send an HTTP DELETE request.
      *
-     * @param  string  $endpoint
-     * @return \stdClass
+     * Use an absolute path to override the base path of the client, or a
+     * relative path to append to the base path of the client. The URL can
+     * contain the query string as well.
+     *
+     * @param string|UriInterface $uri     URI object or string.
+     * @param array               $options Request options to apply.
+     *
+     * @throws GuzzleException
      */
-    public function delete($endpoint = '')
+    public function delete($endpoint, array $options = []): ResponseInterface
     {
         $response = $this->request('DELETE', "{$this->endpoint}{$endpoint}");
 
         $this->sleepIfRateLimited($response);
 
-        return json_decode($response->getBody()->getContents());
+        return $response;
     }
 
     /**
-     * Update a resource using the assigned endpoint ($this->endpoint).
+     * Create and send an HTTP PUT request.
      *
-     * @param  array  $options
-     * @param  string  $endpoint
-     * @return \stdClass
+     * Use an absolute path to override the base path of the client, or a
+     * relative path to append to the base path of the client. The URL can
+     * contain the query string as well.
+     *
+     * @param string|UriInterface $uri     URI object or string.
+     * @param array               $options Request options to apply.
+     *
+     * @throws GuzzleException
      */
-    public function update($options = [], $endpoint = '')
+    public function put($endpoint, array $options = []): ResponseInterface
     {
         $response = $this->request('PUT', "{$this->endpoint}{$endpoint}", ['json' => $options]);
 
         $this->sleepIfRateLimited($response);
 
-        return json_decode($response->getBody()->getContents());
+        return $response;
     }
 
     /**

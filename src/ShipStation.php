@@ -194,7 +194,7 @@ class ShipStation
         $this->remainingRequests = (int) $response->getHeader('X-Rate-Limit-Remaining')[0];
         $this->secondsUntilReset = (int) $response->getHeader('X-Rate-Limit-Reset')[0];
 
-        if (($this->secondsUntilReset / $this->remainingRequests) > 1.5 || $this->isRateLimited()) {
+        if ($this->isRateLimited() || ($this->secondsUntilReset / $this->remainingRequests) > 1.5) {
             sleep(1.5);
         }
     }

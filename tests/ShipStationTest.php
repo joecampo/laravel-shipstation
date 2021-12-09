@@ -22,7 +22,12 @@ class ShipStationTest extends PHPUnit_Framework_TestCase
             exit();
         }
 
-        $this->shipStation = new LaravelShipStation\ShipStation(getenv('KEY'), getenv('SECRET'), getenv('API_URL'));
+        $this->shipStation = new LaravelShipStation\ShipStation(
+            getenv('KEY'),
+            getenv('SECRET'),
+            getenv('API_URL'),
+            getenv('PARTNER_KEY')
+        );
     }
 
     /** @test */
@@ -114,5 +119,31 @@ class ShipStationTest extends PHPUnit_Framework_TestCase
         $this->shipStation->orders->delete($orderId);
 
         $this->assertFalse($this->shipStation->orders->existsByOrderNumber('TestOrder'));
+    }
+
+    /** @test */
+    public function rate_limits_are_set_after_request()
+    {
+        $this->shipStation->webhooks->get();
+
+        $this->assertGreaterThanOrEqual(0, $this->shipStation->getMaxAllowedRequests());
+        $this->assertGreaterThanOrEqual(0, $this->shipStation->getRemainingRequests());
+        $this->assertGreaterThanOrEqual(0, $this->shipStation->getSecondsUntilReset());
+        $this->assertInternalType('boolean', $this->shipStation->isRateLimited());
+    }
+
+    /** @test */
+    public function partner_api_key_header_is_set_when_defined()
+    {
+        if (empty(getenv('PARTNER_KEY'))) {
+            // nothing to test
+            return;
+        }
+
+        $this->shipStation->webhooks->get();
+
+        $headers = $this->shipStation->request->getConfig('headers');
+
+        $this->assertArrayHasKey('x-partner', $headers);
     }
 }

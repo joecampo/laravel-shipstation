@@ -5,7 +5,7 @@ LaravelShipStation
 [![Latest Version on Packagist][packagist-downloads]][link-packagist]
 [![Build Status](https://travis-ci.org/joecampo/laravel-shipstation.svg?branch=master)](https://travis-ci.org/joecampo/laravel-shipstation)
 
-This is a simple PHP API wrapper for [ShipStation](http://shipstation.com) built for Laravel 5.\*/6.
+This is a simple PHP API wrapper for [ShipStation](http://shipstation.com) built for Laravel 8.
 
 Installation
 ------------
@@ -13,7 +13,7 @@ This package can be installed via [Composer](http://getcomposer.org) by requirin
 ```json
 {
     "require": {
-        "campo/laravel-shipstation": "~4.0"
+        "campo/laravel-shipstation": "^5.0"
     }
 }
 ```
@@ -33,6 +33,8 @@ After installing via composer you will need to publish the configuration:
 php artisan vendor:publish
 ```
 This will create the configuration file for your API key and API secret key at ```config/shipstation.php```. You will need to obtain your API & Secret key from ShipStation: [How can I get access to ShipStation's API?](https://help.shipstation.com/hc/en-us/articles/206638917-How-can-I-get-access-to-ShipStation-s-API-)
+
+If ShipStation has provided you with a partner API key, set it in your configuration file.
 ## Dependencies
 LaravelShipStation uses ```GuzzleHttp\Guzzle```
 ## Endpoints
@@ -150,6 +152,33 @@ $shipments = $shipStation->shipments->forOrderNumber($orderNumber);
 
 ## ShipStation API Rate Limit
 ShipStation only allows for 40 API calls that resets every 60 seconds (or 1 call every 1.5 seconds). By default, LaravelShipStation will protect against any calls being rate limited by pausing when we are averaging more than 1 call every 1.5 seconds.
+
+Once a request has been made, information about the current rate limiting values can be accessed using the following methods:
+
+Get the maximum number of requests that can be sent per window:
+```php
+// integer
+$shipStation->getMaxAllowedRequests()
+```
+
+Get the remaining number of requests that can be sent in the current window:
+```php
+// integer
+$shipStation->getRemainingRequests()
+```
+
+Get the number of seconds remaining until the next window begins:
+```php
+// integer
+$shipStation->getSecondsUntilReset()
+```
+
+Check if requests are currently being rate limited:
+```php
+// boolean
+$shipStation->isRateLimited()
+```
+
 ## Tests
 Tests can be ran using ```phpunit```. 
 Please note that tests will create an order, check the order, and delete the order in your production environment. By default, tests are disabled. If you would like to run the tests edit the ```phpunit.xml``` file to set the environment variable ```SHIPSTATION_TESTING``` to ```true``` and set your API Key & Secret Key.

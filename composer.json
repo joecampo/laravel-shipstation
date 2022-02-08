@@ -1,6 +1,6 @@
 {
     "name": "campo/laravel-shipstation",
-    "description": "ShipStation API wrapper for Laravel 5.",
+    "description": "ShipStation API wrapper for Laravel",
     "license": "MIT",
     "authors": [
         {

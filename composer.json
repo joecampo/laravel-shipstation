@@ -13,6 +13,13 @@
             "LaravelShipStation\\": "src/"
         }
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "LaravelShipStation\\ShipStationServiceProvider"
+            ]
+        }
+    },
     "require": {
         "guzzlehttp/guzzle": "^6.3|^7.0.1"
     },

@@ -1,4 +1,5 @@
 <?php
+
 namespace LaravelShipStation;
 
 use GuzzleHttp\Client;
@@ -31,7 +32,7 @@ class ShipStation
         '/stores/',
         '/users/',
         '/warehouses/',
-        '/webhooks/'
+        '/webhooks/',
     ];
 
     /**
@@ -59,14 +60,14 @@ class ShipStation
      */
     public function __construct($apiKey, $apiSecret, $apiURL, $partnerApiKey = null)
     {
-        if (!isset($apiKey, $apiSecret)) {
+        if (! isset($apiKey, $apiSecret)) {
             throw new \Exception('Your API key and/or private key are not set. Did you run artisan vendor:publish?');
         }
 
         $this->base_uri = $apiURL;
 
         $headers = [
-            'Authorization' => 'Basic ' . base64_encode("{$apiKey}:{$apiSecret}"),
+            'Authorization' => 'Basic '.base64_encode("{$apiKey}:{$apiSecret}"),
         ];
 
         if (! empty($partnerApiKey)) {
@@ -143,7 +144,7 @@ class ShipStation
     }
 
     /**
-     * Get the maximum number of requests that can be sent per window
+     * Get the maximum number of requests that can be sent per window.
      *
      * @return int
      */
@@ -153,7 +154,7 @@ class ShipStation
     }
 
     /**
-     * Get the remaining number of requests that can be sent in the current window
+     * Get the remaining number of requests that can be sent in the current window.
      *
      * @return int
      */
@@ -163,7 +164,7 @@ class ShipStation
     }
 
     /**
-     * Get the number of seconds remaining until the next window begins
+     * Get the number of seconds remaining until the next window begins.
      *
      * @return int
      */
@@ -174,7 +175,7 @@ class ShipStation
 
     /**
      * Are we currently rate limited?
-     * We are if there are no more requests allowed in the current window
+     * We are if there are no more requests allowed in the current window.
      *
      * @return bool
      */
@@ -195,7 +196,7 @@ class ShipStation
         $this->secondsUntilReset = (int) $response->getHeader('X-Rate-Limit-Reset')[0];
 
         if ($this->isRateLimited() || ($this->secondsUntilReset / $this->remainingRequests) > 1.5) {
-            sleep(1.5);
+            usleep(1500000);
         }
     }
 
@@ -207,11 +208,11 @@ class ShipStation
      */
     public function __get($property)
     {
-        if (in_array('/' . $property . '/', $this->endpoints)) {
-            $this->endpoint = '/' . $property . '/';
+        if (in_array('/'.$property.'/', $this->endpoints)) {
+            $this->endpoint = '/'.$property.'/';
         }
 
-        $className = "LaravelShipStation\\Helpers\\" . ucfirst($property);
+        $className = 'LaravelShipStation\\Helpers\\'.ucfirst($property);
 
         if (class_exists($className)) {
             return new $className($this);

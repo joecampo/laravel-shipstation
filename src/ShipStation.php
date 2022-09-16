@@ -1,9 +1,12 @@
 <?php
 namespace LaravelShipStation;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\Response;
-use Psr\Http\Message\ResponseInterface;
+
+use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Client\Response;
+
+use Illuminate\Container\Container;
+use Illuminate\Support\Facades\Facade;
 
 class ShipStation
 {
@@ -13,7 +16,7 @@ class ShipStation
     public $endpoint = '/orders/';
 
     /**
-     * @var \GuzzleHttp\Client The http client used when calling the API.
+     * @var \Illuminate\Support\Facades\Http Overriden client used for calling the API
      */
     public $client = null;
 
@@ -65,18 +68,21 @@ class ShipStation
 
         $this->base_uri = $apiURL;
 
-        $headers = [
-            'Authorization' => 'Basic ' . base64_encode("{$apiKey}:{$apiSecret}"),
-        ];
+        $app = new Container();
+        $app->singleton('app', 'Illuminate\Container\Container');
+
+        Facade::setFacadeApplication($app);
+
+        $client = Http::baseUrl($this->base_uri)
+            ->withBasicAuth($apiKey, $apiSecret);
 
         if (! empty($partnerApiKey)) {
-            $headers['x-partner'] = $partnerApiKey;
+            $client = $client->withHeaders([
+                'x-partner' => $partnerApiKey
+            ]);
         }
 
-        $this->client = new Client([
-            'base_uri' => $this->base_uri,
-            'headers'  => $headers,
-        ]);
+        $this->client = $client;
     }
 
     /**
@@ -88,11 +94,11 @@ class ShipStation
      */
     public function get($options = [], $endpoint = '')
     {
-        $response = $this->client->request('GET', "{$this->endpoint}{$endpoint}", ['query' => $options]);
+        $response = $this->client->get("{$this->endpoint}{$endpoint}", $options);
 
         $this->sleepIfRateLimited($response);
 
-        return json_decode($response->getBody()->getContents());
+        return $response->object();
     }
 
     /**
@@ -104,11 +110,11 @@ class ShipStation
      */
     public function post($options = [], $endpoint = '')
     {
-        $response = $this->client->request('POST', "{$this->endpoint}{$endpoint}", ['json' => $options]);
+        $response = $this->client->post("{$this->endpoint}{$endpoint}", (array) $options);
 
         $this->sleepIfRateLimited($response);
 
-        return json_decode($response->getBody()->getContents());
+        return $response->object();
     }
 
     /**
@@ -119,11 +125,11 @@ class ShipStation
      */
     public function delete($endpoint = '')
     {
-        $response = $this->client->request('DELETE', "{$this->endpoint}{$endpoint}");
+        $response = $this->client->delete("{$this->endpoint}{$endpoint}");
 
         $this->sleepIfRateLimited($response);
 
-        return json_decode($response->getBody()->getContents());
+        return $response->object();
     }
 
     /**
@@ -135,11 +141,10 @@ class ShipStation
      */
     public function update($options = [], $endpoint = '')
     {
-        $response = $this->client->request('PUT', "{$this->endpoint}{$endpoint}", ['json' => $options]);
-
+        $response = $this->client->put("{$this->endpoint}{$endpoint}", (array) $options);
         $this->sleepIfRateLimited($response);
 
-        return json_decode($response->getBody()->getContents());
+        return $response->object();
     }
 
     /**
@@ -190,9 +195,9 @@ class ShipStation
      */
     public function sleepIfRateLimited(Response $response)
     {
-        $this->maxAllowedRequests = (int) $response->getHeader('X-Rate-Limit-Limit')[0];
-        $this->remainingRequests = (int) $response->getHeader('X-Rate-Limit-Remaining')[0];
-        $this->secondsUntilReset = (int) $response->getHeader('X-Rate-Limit-Reset')[0];
+        $this->maxAllowedRequests = (int) $response->header('X-Rate-Limit-Limit');
+        $this->remainingRequests = (int) $response->header('X-Rate-Limit-Remaining');
+        $this->secondsUntilReset = (int) $response->header('X-Rate-Limit-Reset');
 
         if ($this->isRateLimited() || ($this->secondsUntilReset / $this->remainingRequests) > 1.5) {
             sleep(1.5);

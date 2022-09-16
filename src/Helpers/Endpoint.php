@@ -76,16 +76,14 @@ abstract class Endpoint
         $pages = $this->getTotalPages($orderNumber);
 
         foreach (range(1, $pages) as $i) {
-            $response = $this->api->client->request('GET', "/orders/", [
-                'query' => [
-                    'orderNumber' => $orderNumber,
-                    'page' => $i
-                ]
+            $response = $this->api->client->get("{$this->api->endpoint}", [
+                'orderNumber' => $orderNumber,
+                'page' => $i
             ]);
-
+            
             $this->api->sleepIfRateLimited($response);
-
-            $data = json_decode($response->getBody()->getContents());
+            
+            $data = $response->object();
 
             $orders = isset($data->orders) ? $data->orders : [];
 
@@ -107,11 +105,11 @@ abstract class Endpoint
      */
     private function getTotalPages($orderNumber)
     {
-        $response = $this->api->client->request('GET', "/orders/", [
-            'query' => ['orderNumber' => $orderNumber]
+        $response = $this->api->client->get("{$this->api->endpoint}", [
+            'orderNumber' => $orderNumber
         ]);
 
-        $data = json_decode($response->getBody()->getContents());
+        $data = (object) $response->json();
 
         return isset($data->pages) ? $data->pages : 0;
     }

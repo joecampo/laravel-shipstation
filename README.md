@@ -56,7 +56,7 @@ Endpoints for the API are accessed via properties (e.g. ```$shipStation->orders-
 ```php
 $shipStation->{$endpoint}->get($options = [], $endpoint = '');
 ```
-Example of getting an order with the orderId of 1.
+Example of getting an order with the order id (ShipStation's internal order id) of 123 & Getting ShipStations internal order id by the order number. 
 ```php
 $shipStation = $this->app['LaravelShipStation\ShipStation'];
 
